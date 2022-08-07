@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "start": "http-server -p 8080",
+    "lint": "npx eslint src",
+    "lint:fix": "yarn lint --fix",
+    "prettier": "npx prettier src --check",
+    "prettier:fix": "yarn prettier --write",
+    "format": "yarn lint:fix && yarn prettier:fix",
+    "prepare": "husky install"
+  },
+  "name": "secretlab",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Jian Zhen Tan <tanjianzhen3000@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "2.7.1"
+  },
+  "devDependencies": {
+    "husky": "^7.0.0"
+  }
+}
