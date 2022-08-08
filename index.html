@@ -12,21 +12,37 @@
   <main>
     <h1>💺 Secret-Lab</h1>
     <!-- canvas -->
-    <canvas id="canvas" width="600" height="600"></canvas>
+    <canvas id="canvas" width="500" height="500"></canvas>
 
-    <div>
-      <div id="carousel">
-        <a href="#">Back</a>
-        <p>1 of 12</p>
-        <a href="#">Next</a>
-      </div>
-
+    <div class="controls">
+      <h3>Title / Image 1</h3>
       <div>
-        <button>Delete</button>
-        <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg">
+        <div class="carousel">
+          <a href="#">Back</a>
+          <p>1 of 12</p>
+          <a href="#">Next</a>
+        </div>
+
+        <div>
+          <button>Delete</button>
+
+          <label class="image-input">
+            <button onclick="document.getElementById('imageInput').click()">Upload New Image</button>
+            <input id="imageInput" type="file" accept="image/jpeg, image/png, image/jpg" tabindex="-1">
+          </label>
+        </div>
       </div>
     </div>
 
+    <hr>
+
+    <div class="tags-container">
+      <div>
+        <h3>Tags</h3>
+        <ul id="tags"></ul>
+      </div>
+      <button onclick="handleClearAll()">Clear All Tags</button>
+    </div>
 
   </main>
   <script src="src/app.js" defer></script>

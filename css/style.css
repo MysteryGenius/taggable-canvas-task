@@ -1,13 +1,18 @@
-html, body {
-  height: 100%;
-}
+/* Components */
+
+@import "carousel.css";
+@import "controls.css";
+@import "input.css";
+@import "tags.css";
+
+
+/* Main */
 
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   background-color: #f2f2f2;
 }
 
@@ -21,11 +26,5 @@ canvas {
   border: 1px solid #D3D3D3;
   background-color: #fff;
   margin-bottom: 1rem;
-}
-
-/* Components */
-#carousel {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
+  cursor: crosshair;
 }

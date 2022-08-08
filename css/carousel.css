@@ -1,0 +1,9 @@
+.carousel {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.carousel > * {
+  margin: 0.5rem;
+}
