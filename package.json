@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "http-server -p 8080",
+    "start": "npx http-server -p 8080",
     "lint": "npx eslint src",
     "lint:fix": "yarn lint --fix",
     "prettier": "npx prettier src --check",

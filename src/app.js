@@ -30,7 +30,9 @@ var startY
 const redrawCanvas = () => {
   // clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  // redraw stored rectangles
+  ctx.strokeStyle = "#a9a9a9"
+  ctx.fillStyle = "#a9a9a9"
+
   for (var i = 0; i < rects.length; i++) {
     ctx.strokeRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height)
     ctx.fillText(rects[i].caption, rects[i].x + 5, rects[i].y + 13)
@@ -40,6 +42,7 @@ const redrawCanvas = () => {
 const handleClearAll = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   rects = []
+  rectCount = 0
   document.getElementById("tags").innerHTML = ""
 }
 
@@ -81,7 +84,7 @@ const handleMouseUp = (e) => {
     // Append to the Tags ol
     const li = document.createElement("li")
     li.innerHTML = caption
-    const deleteButton = document.createElement("button")
+    const deleteButton = document.createElement("a")
     deleteButton.innerHTML = "Delete"
     deleteButton.id = rectCount
     deleteButton.onclick = () => {
@@ -108,6 +111,9 @@ const handleMouseMove = (e) => {
   if (!isDown) {
     return
   }
+
+  // stroke color
+  ctx.strokeStyle = "#2d92ff"
 
   // get the current mouse position
   mouseX = parseInt(e.clientX - offsetX)

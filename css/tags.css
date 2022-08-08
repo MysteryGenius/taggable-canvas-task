@@ -2,3 +2,24 @@
   max-width: 500px;
   width: 100%;
 }
+
+.tags-container > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tags-container > ul > li {
+  margin-bottom: 0.25rem;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.tags-container > ul > li > a {
+  color: #3192fa;
+  text-decoration: none;
+}
+
+.tags-container > ul > li > * {
+  margin: 0 0.5rem;
+}
