@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "npx http-server -p 8080",
+    "start": "http-server -p 8080",
     "lint": "npx eslint src",
     "lint:fix": "yarn lint --fix",
     "prettier": "npx prettier src --check",
@@ -10,7 +10,7 @@
   },
   "name": "secretlab",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "src/app.js",
   "author": "Jian Zhen Tan <tanjianzhen3000@gmail.com>",
   "license": "MIT",
   "dependencies": {

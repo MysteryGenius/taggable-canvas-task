@@ -15,12 +15,12 @@
     <canvas id="canvas" width="500" height="500"></canvas>
 
     <div class="controls">
-      <h3>Title / Image 1</h3>
+      <h3 id="imageTitle">Title / Image 1</h3>
       <div>
         <div class="carousel">
-          <a href="#">Back</a>
-          <p>1 of 12</p>
-          <a href="#">Next</a>
+          <a href="#" id="backButton">Back</a>
+          <p><span id="currImage"></span> of <span id="totalImages"></span></p>
+          <a href="#" id="nextButton">Next</a>
         </div>
 
         <div>
@@ -38,7 +38,7 @@
 
     <div class="tags-container">
       <ul id="tags"></ul>
-      <button onclick="handleClearAll()">Clear All Tags</button>
+      <button id="clearAll">Clear All Tags</button>
     </div>
 
   </main>
