@@ -1,12 +1,5 @@
 // ceate a datastructure to store the image data
 
-// sampleData = {
-//   id: 1,
-//   title: "Image 1",
-//   src: "https://picsum.photos/200/300",
-//   tags: [{}]
-// };
-
 let imageCount = 0
 let imageData = []
 
@@ -28,66 +21,21 @@ var isDown = false
 var startX
 var startY
 
-const handleBackButtonClick = (e) => {
-  e.preventDefault()
-  // this will replace the current image with the previous image
-  // if there is no previous image, do nothing
-  if (imageData.length > 1) {
-    // find current image in array
-    let currImageIndex = imageData.findIndex((image) => image.id === currImage.id)
-    // if there is a previous image, set it to currImage
-    if (currImageIndex > 0) {
-      updateCurrImage()
-      currImage = imageData[currImageIndex - 1]
-    }
-    drawImage(currImage.src)
-    drawTagsList()
-    redrawCanvas(currImage)
-    refreshSync()
-  }
+const saveToLocalStorage = () => {
+  localStorage.setItem("imageData", JSON.stringify(imageData))
 }
 
-const handleNextButtonClick = (e) => {
-  e.preventDefault()
-  // this will replace the current image with the next image
-  // if there is no next image, do nothing
-  if (imageData.length > 1) {
-    // find current image in array
-    let currImageIndex = imageData.findIndex((image) => image.id === currImage.id)
-    // if there is a next image, set it to currImage
-    upperLimit = imageData.length - 1
-    if (currImageIndex < upperLimit) {
-      updateCurrImage()
-      currImage = imageData[currImageIndex + 1]
-    }
-    drawImage(currImage.src)
-    drawTagsList()
-    redrawCanvas(currImage)
-    refreshSync()
-  }
-}
-
-// imageTitle onclick creates an input field and replaces the imageTitle with the input field
-const handleImageTitleClick = (e) => {
-  const imageTitle = e.target
-  const imageTitleInput = document.createElement("input")
-  imageTitleInput.type = "text"
-  imageTitleInput.value = imageTitle.innerText
-  imageTitle.replaceWith(imageTitleInput)
-  imageTitleInput.focus()
-  imageTitleInput.onblur = (e) => {
-    const imageTitleInput = e.target
-    const imageTitle = document.createElement("h3")
-    imageTitle.id = "imageTitle"
-    imageTitle.innerText = imageTitleInput.value
-    imageTitle.onclick = handleImageTitleClick
-    imageTitleInput.replaceWith(imageTitle)
+const getFromLocalStorage = () => {
+  // if imageData is in localStorage, get it and set it to imageData
+  if (localStorage.getItem("imageData")) {
+    imageData = JSON.parse(localStorage.getItem("imageData"))
   }
 }
 
 const updateCurrImage = () => {
   let currImageIndex = imageData.findIndex((image) => image.id === currImage.id)
   imageData[currImageIndex] = currImage
+  saveToLocalStorage()
 }
 
 const createNewImage = (image = null) => {
@@ -110,7 +58,9 @@ const createNewImage = (image = null) => {
 const refreshSync = () => {
   document.getElementById("imageTitle").innerHTML = currImage.title
   document.getElementById("totalImages").innerHTML = imageData.length
-  document.getElementById("currImage").innerHTML = currImage.id
+  // get index of current image in imageData array
+  let currImageIndex = imageData.findIndex((image) => image.id === currImage.id) + 1
+  document.getElementById("currImage").innerHTML = currImageIndex
 }
 
 const redrawCanvas = (imageDataObj) => {
@@ -144,39 +94,8 @@ const clearAllTags = () => {
   currImage.tagCount = 0
 }
 
-const handleClearAll = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
-
-  clearAllTags()
-}
-
 const drawImage = (src) => {
   canvas.style.backgroundImage = `url(${src})`
-}
-
-const handleImageInput = (e) => {
-  const imageInput = e.target
-  const image = imageInput.files[0]
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    const newImage = createNewImage(e.target.result)
-    drawImage(newImage.src)
-    redrawCanvas(newImage)
-  }
-  reader.readAsDataURL(image)
-}
-
-const handleMouseDown = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
-
-  // save the starting x/y of the rectangle
-  startX = parseInt(e.clientX - offsetX)
-  startY = parseInt(e.clientY - offsetY)
-
-  // set a flag indicating the drag has begun
-  isDown = true
 }
 
 const drawTagsList = () => {
@@ -230,6 +149,107 @@ const drawTagsList = () => {
     li.appendChild(deleteButton)
     document.getElementById("tags").appendChild(li)
   })
+}
+
+const handleDeleteButtonClick = (e) => {
+  e.preventDefault()
+  e.stopPropagation()
+  // remove the image from the imageData array
+  imageData = imageData.filter((image) => image.id !== currImage.id)
+  localStorage.removeItem("imageData")
+  saveToLocalStorage()
+  currImage = imageData[0]
+  redrawCanvas(currImage)
+  drawImage(currImage.src)
+  drawTagsList()
+  refreshSync()
+}
+
+const handleBackButtonClick = (e) => {
+  e.preventDefault()
+  // this will replace the current image with the previous image
+  // if there is no previous image, do nothing
+  if (imageData.length > 1) {
+    // find current image in array
+    let currImageIndex = imageData.findIndex((image) => image.id === currImage.id)
+    // if there is a previous image, set it to currImage
+    if (currImageIndex > 0) {
+      updateCurrImage()
+      currImage = imageData[currImageIndex - 1]
+    }
+    drawImage(currImage.src)
+    drawTagsList()
+    redrawCanvas(currImage)
+    refreshSync()
+  }
+}
+
+const handleNextButtonClick = (e) => {
+  e.preventDefault()
+  // this will replace the current image with the next image
+  // if there is no next image, do nothing
+  if (imageData.length > 1) {
+    // find current image in array
+    let currImageIndex = imageData.findIndex((image) => image.id === currImage.id)
+    // if there is a next image, set it to currImage
+    upperLimit = imageData.length - 1
+    if (currImageIndex < upperLimit) {
+      updateCurrImage()
+      currImage = imageData[currImageIndex + 1]
+    }
+    drawImage(currImage.src)
+    drawTagsList()
+    redrawCanvas(currImage)
+    refreshSync()
+  }
+}
+
+const handleImageTitleClick = (e) => {
+  const imageTitle = e.target
+  const imageTitleInput = document.createElement("input")
+  imageTitleInput.type = "text"
+  imageTitleInput.value = imageTitle.innerText
+  imageTitle.replaceWith(imageTitleInput)
+  imageTitleInput.focus()
+  imageTitleInput.onblur = (e) => {
+    const imageTitleInput = e.target
+    const imageTitle = document.createElement("h3")
+    imageTitle.id = "imageTitle"
+    imageTitle.innerText = imageTitleInput.value
+    imageTitle.onclick = handleImageTitleClick
+    imageTitleInput.replaceWith(imageTitle)
+  }
+}
+
+const handleClearAll = (e) => {
+  e.preventDefault()
+  e.stopPropagation()
+
+  clearAllTags()
+}
+
+const handleImageInput = (e) => {
+  const imageInput = e.target
+  const image = imageInput.files[0]
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const newImage = createNewImage(e.target.result)
+    drawImage(newImage.src)
+    redrawCanvas(newImage)
+  }
+  reader.readAsDataURL(image)
+}
+
+const handleMouseDown = (e) => {
+  e.preventDefault()
+  e.stopPropagation()
+
+  // save the starting x/y of the rectangle
+  startX = parseInt(e.clientX - offsetX)
+  startY = parseInt(e.clientY - offsetY)
+
+  // set a flag indicating the drag has begun
+  isDown = true
 }
 
 const handleMouseUp = (e) => {
@@ -300,8 +320,25 @@ const handleMouseMove = (e) => {
 }
 
 if (imageData.length <= 0) {
-  createNewImage()
-  refreshSync()
+  getFromLocalStorage()
+  if (imageData.length <= 0) {
+    const image = new Image()
+    image.src = "assets/placeholder.jpg"
+    image.onload = () => {
+      createNewImage(image.src)
+      currImage = imageData[0]
+      drawImage(currImage.src)
+      drawTagsList()
+      redrawCanvas(currImage)
+      refreshSync()
+    }
+  } else {
+    currImage = imageData[0]
+    drawImage(currImage.src)
+    drawTagsList()
+    redrawCanvas(currImage)
+    refreshSync()
+  }
 }
 
 document.getElementById("canvas").addEventListener("mousedown", function (e) {
@@ -330,4 +367,7 @@ document.getElementById("backButton").addEventListener("click", function (e) {
 })
 document.getElementById("nextButton").addEventListener("click", function (e) {
   handleNextButtonClick(e)
+})
+document.getElementById("deleteButton").addEventListener("click", function (e) {
+  handleDeleteButtonClick(e)
 })
