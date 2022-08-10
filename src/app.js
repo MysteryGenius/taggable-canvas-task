@@ -218,6 +218,7 @@ const handleImageTitleClick = (e) => {
     imageTitle.innerText = imageTitleInput.value
     imageTitle.onclick = handleImageTitleClick
     imageTitleInput.replaceWith(imageTitle)
+    currImage.title = imageTitleInput.value
   }
 }
 
