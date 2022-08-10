@@ -2,8 +2,25 @@
   display: flex;
   flex-flow: row wrap;
   align-items: center;
+  justify-content: end;
 }
 
 .carousel > * {
   margin: 0.5rem;
+}
+
+.carousel > a {
+  text-decoration: none;
+  color: #009688;
+  border: 1px solid #009688;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  padding-bottom: 0.2rem;
+  transition: 0.2s ease-in-out;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.carousel > a:hover {
+  background-color: #009688;
+  color: #fff;
 }
