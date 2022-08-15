@@ -9,7 +9,9 @@ This is a simple project to help you understand my skills...I guess 😬
 
 ## User Guide Video
 
-https://user-images.githubusercontent.com/38975808/184641579-3ce46a5f-5a4a-4cf8-a50a-136c735cdf2a.mov
+
+https://user-images.githubusercontent.com/38975808/184641848-11403eb9-d5f8-4c11-9591-cf04990f91d6.mov
+
 
 ## 🙆🏻‍♀️ Explaining my choices
 
