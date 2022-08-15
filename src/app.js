@@ -17,9 +17,27 @@ var offsetY = canvasOffset.top
 // this flage is true when the user is dragging the mouse
 var isDown = false
 
+// var containing information about the current tag being dragged around
+var draggedRect = null
+var mouseX = 0
+var mouseY = 0
+
 // these vars will hold the starting mouse position
 var startX
 var startY
+
+const getIdFromUrl = () => {
+  const url = window.location.href
+  const id = url.split("#").pop()
+  if (id === url || id === "") {
+    return null
+  }
+  return id
+}
+
+const setIdInUrl = (id) => {
+  window.location.href = window.location.href.split("#").shift() + "#" + id
+}
 
 const saveToLocalStorage = () => {
   localStorage.setItem("imageData", JSON.stringify(imageData))
@@ -52,6 +70,7 @@ const createNewImage = (image = null) => {
   currImage = returnable
   resetTags()
   refreshSync()
+  setIdInUrl(currImage.id)
   return returnable
 }
 
@@ -66,8 +85,8 @@ const refreshSync = () => {
 const redrawCanvas = (imageDataObj) => {
   // clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.strokeStyle = "#565656"
-  ctx.fillStyle = "#565656"
+  ctx.strokeStyle = "#fff"
+  ctx.fillStyle = "#fff"
 
   tags = imageDataObj.tags
 
@@ -131,6 +150,7 @@ const drawTagsList = () => {
           })
           // remove the input field and replace the span with the tag name
           input.replaceWith(span)
+          saveToLocalStorage()
           redrawCanvas(currImage)
         }
       })
@@ -151,12 +171,43 @@ const drawTagsList = () => {
   })
 }
 
+const handlePageLoad = () => {
+  let id = getIdFromUrl()
+  currImage = []
+  if (imageData.length <= 0) {
+    getFromLocalStorage()
+    if (imageData.length <= 0) {
+      const image = new Image()
+      image.src = "assets/placeholder.jpg"
+      image.onload = () => {
+        createNewImage(image.src)
+        currImage = imageData[0]
+      }
+    } else {
+      console.log("imageData is not empty")
+      console.log(imageData)
+      console.log(id)
+      currImage = imageData[0]
+      if (id) {
+        currImage = imageData.find((image) => image.id === parseInt(id))
+      }
+    }
+    drawImage(currImage.src)
+    drawTagsList()
+    redrawCanvas(currImage)
+    refreshSync()
+  }
+}
+
 const handleDeleteButtonClick = (e) => {
   e.preventDefault()
   e.stopPropagation()
   // remove the image from the imageData array
-  imageData = imageData.filter((image) => image.id !== currImage.id)
-  localStorage.removeItem("imageData")
+  id = getIdFromUrl()
+  if (id) {
+    imageData = imageData.filter((image) => image.id !== parseInt(id))
+    localStorage.removeItem("imageData")
+  }
   saveToLocalStorage()
   currImage = imageData[0]
   redrawCanvas(currImage)
@@ -181,6 +232,7 @@ const handleBackButtonClick = (e) => {
     drawTagsList()
     redrawCanvas(currImage)
     refreshSync()
+    setIdInUrl(currImage.id)
   }
 }
 
@@ -201,6 +253,7 @@ const handleNextButtonClick = (e) => {
     drawTagsList()
     redrawCanvas(currImage)
     refreshSync()
+    setIdInUrl(currImage.id)
   }
 }
 
@@ -249,13 +302,30 @@ const handleMouseDown = (e) => {
   startX = parseInt(e.clientX - offsetX)
   startY = parseInt(e.clientY - offsetY)
 
-  // set a flag indicating the drag has begun
-  isDown = true
+  // if the mouse is within an existing rectangle, set the draggedRect to that rectangle
+  if (currImage.tags.length > 0) {
+    currImage.tags.forEach((rect) => {
+      if (startX >= rect.x && startX <= rect.x + rect.width && startY >= rect.y && startY <= rect.y + rect.height) {
+        draggedRect = rect
+      }
+    })
+  }
+
+  if (!draggedRect) {
+    isDown = true
+  }
 }
 
 const handleMouseUp = (e) => {
   e.preventDefault()
   e.stopPropagation()
+
+  if (draggedRect !== null) {
+    draggedRect = null
+    updateCurrImage()
+    return
+  }
+
   isDown = false
 
   rectCount = currImage.tagCount++
@@ -271,14 +341,15 @@ const handleMouseUp = (e) => {
       id: rectCount,
       x: startX,
       y: startY,
-      width: width,
-      height: height,
+      width: Math.abs(width),
+      height: Math.abs(height),
       caption: caption
     }
     ctx.fillText(caption, startX + 5, startY + 13)
     currImage.tags.push(tag)
 
     drawTagsList()
+    updateCurrImage()
   }
 }
 
@@ -292,7 +363,13 @@ const handleMouseMove = (e) => {
   e.preventDefault()
   e.stopPropagation()
 
-  // if we're not dragging, just return
+  if (draggedRect !== null) {
+    // if the mouse is down, update the draggedRect's x/y values
+    draggedRect.x = parseInt(e.clientX - offsetX)
+    draggedRect.y = parseInt(e.clientY - offsetY)
+    redrawCanvas(currImage)
+  }
+
   if (!isDown) {
     return
   }
@@ -318,28 +395,6 @@ const handleMouseMove = (e) => {
   y1 = startY
   x2 = width
   y2 = height
-}
-
-if (imageData.length <= 0) {
-  getFromLocalStorage()
-  if (imageData.length <= 0) {
-    const image = new Image()
-    image.src = "assets/placeholder.jpg"
-    image.onload = () => {
-      createNewImage(image.src)
-      currImage = imageData[0]
-      drawImage(currImage.src)
-      drawTagsList()
-      redrawCanvas(currImage)
-      refreshSync()
-    }
-  } else {
-    currImage = imageData[0]
-    drawImage(currImage.src)
-    drawTagsList()
-    redrawCanvas(currImage)
-    refreshSync()
-  }
 }
 
 document.getElementById("canvas").addEventListener("mousedown", function (e) {

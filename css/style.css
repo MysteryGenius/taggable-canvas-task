@@ -1,8 +1,11 @@
 /* Components */
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
 @import "button.css";
 @import "carousel.css";
 @import "controls.css";
+@import "gallery.css";
 @import "input.css";
 @import "tags.css";
 
@@ -35,4 +38,30 @@ canvas {
   background-color: #fff;
   margin-bottom: 1rem;
   cursor: crosshair;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+nav a {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #3192fa;
+  transition: 0.5s;
+}
+
+nav a:hover {
+  color: #0e4f95;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
 }
