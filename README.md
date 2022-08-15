@@ -1,7 +1,7 @@
 # 💺 Secret-Lab
 
 Here is a quick link to my attempt at the task
-[https://jianzhen-secretlab-task.netlify.app/](https://jianzhen-secretlab-task.netlify.app/)
+[https://secretlabjs.oi.wtf/](https://secretlabjs.oi.wtf/)
 
 ## 📝 Description
 
