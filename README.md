@@ -7,6 +7,10 @@ Here is a quick link to my attempt at the task
 
 This is a simple project to help you understand my skills...I guess 😬
 
+## User Guide Video
+
+https://user-images.githubusercontent.com/38975808/184641579-3ce46a5f-5a4a-4cf8-a50a-136c735cdf2a.mov
+
 ## 🙆🏻‍♀️ Explaining my choices
 
 In the project I have chosen to not use JQuery as it is a dying library. Instead I have used only vanilla JavaScript. This however presented a fun challenge as I had write a lot more code to make the project work.
