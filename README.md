@@ -13,6 +13,10 @@ This is a simple project to help you understand my skills...I guess 😬
 https://user-images.githubusercontent.com/38975808/184641848-11403eb9-d5f8-4c11-9591-cf04990f91d6.mov
 
 
+### (Edit) Added a small lil animation 
+
+https://user-images.githubusercontent.com/38975808/184766819-c95a4ef5-84cb-4b4f-8c61-4782410a56db.mov
+
 ## 🙆🏻‍♀️ Explaining my choices
 
 In the project I have chosen to not use JQuery as it is a dying library. Instead I have used only vanilla JavaScript. This however presented a fun challenge as I had write a lot more code to make the project work.
