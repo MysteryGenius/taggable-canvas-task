@@ -5,6 +5,7 @@
   margin-bottom: 1rem;
   margin: 0 auto;
   padding: 0;
+  perspective: 1000px;
 }
 
 .gallery-item {
@@ -15,6 +16,15 @@
   background-color: #fff;
   font-family: 'Montserrat';
   margin: 0 auto;
+  transition: 0.2s;
+}
+
+.gallery-item:hover {
+  transform: rotateY(15deg);
+}
+
+.gallery-item:active {
+  transform: rotateY(90deg);
 }
 
 .gallery-item div {
