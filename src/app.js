@@ -5,6 +5,8 @@ let imageData = []
 
 let currImage = {}
 
+let drawnImage = new Image()
+
 var canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
@@ -114,10 +116,17 @@ const clearAllTags = () => {
 }
 
 const drawImage = (src) => {
-  canvas.style.backgroundImage = `url(${src})`
-  canvas.style.backgroundSize = "cover"
-  canvas.style.backgroundPosition = "center"
-  canvas.style.backgroundRepeat = "no-repeat"
+  drawnImage.src = src
+  // image is loaded, scale it to fit the canvas
+  drawnImage.onload = () => {
+    let ratio = canvas.width / drawnImage.width
+    let newHeight = drawnImage.height * ratio
+    let newWidth = canvas.width
+    let newX = 0
+    let newY = (canvas.height - newHeight) / 2
+
+    ctx.drawImage(drawnImage, newX, newY, newWidth, newHeight)
+  }
 }
 
 const drawTagsList = () => {
