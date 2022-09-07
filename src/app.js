@@ -5,8 +5,6 @@ let imageData = []
 
 let currImage = {}
 
-let drawnImage = new Image()
-
 var canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
@@ -58,8 +56,9 @@ const updateCurrImage = () => {
   saveToLocalStorage()
 }
 
-const createNewImage = (image = null) => {
+const createNewImage = (image = "assets/placeholder.jpg") => {
   updateCurrImage()
+  imageCount = imageData.length
   imageCount++
   returnable = {
     id: imageCount,
@@ -116,17 +115,10 @@ const clearAllTags = () => {
 }
 
 const drawImage = (src) => {
-  drawnImage.src = src
-  // image is loaded, scale it to fit the canvas
-  drawnImage.onload = () => {
-    let ratio = canvas.width / drawnImage.width
-    let newHeight = drawnImage.height * ratio
-    let newWidth = canvas.width
-    let newX = 0
-    let newY = (canvas.height - newHeight) / 2
-
-    ctx.drawImage(drawnImage, newX, newY, newWidth, newHeight)
-  }
+  canvas.style.backgroundImage = `url(${src})`
+  canvas.style.backgroundSize = "contain"
+  canvas.style.backgroundPosition = "center"
+  canvas.style.backgroundRepeat = "no-repeat"
 }
 
 const drawTagsList = () => {
@@ -191,10 +183,8 @@ const handlePageLoad = () => {
     if (imageData.length <= 0) {
       const image = new Image()
       image.src = "assets/placeholder.jpg"
-      image.onload = () => {
-        createNewImage(image.src)
-        currImage = imageData[0]
-      }
+      createNewImage(image.src)
+      currImage = imageData[0]
     } else {
       console.log("imageData is not empty")
       console.log(imageData)
@@ -204,6 +194,7 @@ const handlePageLoad = () => {
         currImage = imageData.find((image) => image.id === parseInt(id))
       }
     }
+    imageCount = currImage.length
     drawImage(currImage.src)
     drawTagsList()
     redrawCanvas(currImage)
@@ -349,12 +340,21 @@ const handleMouseUp = (e) => {
   width = parseInt(e.clientX - offsetX) - startX
   height = parseInt(e.clientY - offsetY) - startY
   if ((width > threshold || width < -threshold) && (height > threshold || height < -threshold)) {
+    // if width/height are negative, make them positive
+    if (width < 0) {
+      startX += width
+      width = Math.abs(width)
+    }
+    if (height < 0) {
+      startY += height
+      height = Math.abs(height)
+    }
     var tag = {
       id: rectCount,
       x: startX,
       y: startY,
-      width: Math.abs(width),
-      height: Math.abs(height),
+      width: width,
+      height: height,
       caption: caption
     }
     ctx.fillText(caption, startX + 5, startY + 13)
