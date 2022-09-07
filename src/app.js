@@ -115,6 +115,9 @@ const clearAllTags = () => {
 
 const drawImage = (src) => {
   canvas.style.backgroundImage = `url(${src})`
+  canvas.style.backgroundSize = "cover"
+  canvas.style.backgroundPosition = "center"
+  canvas.style.backgroundRepeat = "no-repeat"
 }
 
 const drawTagsList = () => {
